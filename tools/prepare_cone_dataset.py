@@ -25,10 +25,14 @@ CLASS_ALIASES = {
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="Prepare a YOLO classification dataset from class folders or a 7z archive")
+    parser = argparse.ArgumentParser(
+        description="Prepare a YOLO classification dataset from class folders or a 7z archive"
+    )
     parser.add_argument("--source", type=Path, required=True, help="Input directory or .7z archive")
     parser.add_argument("--output", type=Path, default=Path("datasets/cone_light"), help="Output dataset directory")
-    parser.add_argument("--val-ratio", type=float, default=0.2, help="Validation ratio per class, split by filename prefix")
+    parser.add_argument(
+        "--val-ratio", type=float, default=0.2, help="Validation ratio per class, split by filename prefix"
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed used to choose validation groups")
     parser.add_argument("--force", action="store_true", help="Replace an existing output directory")
     return parser.parse_args()
@@ -137,7 +141,9 @@ def copy_dataset(records: list[dict[str, object]], output: Path) -> None:
     output.mkdir(parents=True)
     manifest_path = output / "manifest.csv"
     with manifest_path.open("w", newline="", encoding="utf-8") as manifest_file:
-        writer = csv.DictWriter(manifest_file, fieldnames=["split", "class_name", "group", "source", "output", "sha256"])
+        writer = csv.DictWriter(
+            manifest_file, fieldnames=["split", "class_name", "group", "source", "output", "sha256"]
+        )
         writer.writeheader()
         for record in records:
             source = Path(record["source"])
@@ -194,7 +200,10 @@ def main() -> None:
         counts[(str(record["split"]), str(record["class_name"]))] += 1
     print(f"Prepared {len(records)} unique images at {output}")
     for split in ("train", "val"):
-        print(f"{split}: " + ", ".join(f"{class_name}={counts[(split, class_name)]}" for class_name in sorted(CLASS_ALIASES)))
+        print(
+            f"{split}: "
+            + ", ".join(f"{class_name}={counts[(split, class_name)]}" for class_name in sorted(CLASS_ALIASES))
+        )
     print("Split groups are disjoint; use manifest.csv to audit the source files.")
 
 

@@ -9,6 +9,7 @@ from collections import Counter, deque
 from pathlib import Path
 
 import cv2
+
 from ultralytics import YOLO
 
 DEFAULT_MODEL = Path("runs/classify/runs/classify/traffic_light_yolo11n_cls_v2/weights/best.pt")
@@ -36,8 +37,26 @@ def draw_status(frame, label: str, confidence: float, fps: float, history_size: 
     text = f"{label}  {confidence:.1%}" if label != "uncertain" else "uncertain"
     cv2.rectangle(frame, (15, 15), (440, 105), (20, 20, 20), -1)
     cv2.putText(frame, text, (30, 52), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2, cv2.LINE_AA)
-    cv2.putText(frame, f"FPS {fps:.1f}  smoothing {history_size}", (30, 84), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (235, 235, 235), 1, cv2.LINE_AA)
-    cv2.putText(frame, "Q/Esc: quit   S: screenshot", (20, frame.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (235, 235, 235), 1, cv2.LINE_AA)
+    cv2.putText(
+        frame,
+        f"FPS {fps:.1f}  smoothing {history_size}",
+        (30, 84),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.55,
+        (235, 235, 235),
+        1,
+        cv2.LINE_AA,
+    )
+    cv2.putText(
+        frame,
+        "Q/Esc: quit   S: screenshot",
+        (20, frame.shape[0] - 20),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.6,
+        (235, 235, 235),
+        1,
+        cv2.LINE_AA,
+    )
 
 
 def main() -> None:
