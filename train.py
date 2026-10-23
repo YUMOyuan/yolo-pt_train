@@ -14,7 +14,9 @@ def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(description="Train a lightweight red/green image classifier")
     parser.add_argument("--model", default="yolo11n-cls.pt", help="Classification checkpoint or YAML model")
-    parser.add_argument("--data", type=Path, default=Path("datasets/data.yaml"), help="Classification dataset directory or YAML config")
+    parser.add_argument(
+        "--data", type=Path, default=Path("datasets/data.yaml"), help="Classification dataset directory or YAML config"
+    )
     parser.add_argument("--epochs", type=int, default=100, help="Maximum training epochs")
     parser.add_argument("--imgsz", type=int, default=320, help="Square training image size")
     parser.add_argument("--batch", type=int, default=32, help="Batch size; reduce it when GPU memory is limited")
@@ -24,7 +26,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--project", default="runs/classify", help="Training result directory")
     parser.add_argument("--name", default="traffic_light_yolo11n_cls", help="Experiment name")
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
-    parser.add_argument("--export", choices=("onnx", "openvino", "torchscript"), help="Export the best model after validation")
+    parser.add_argument(
+        "--export", choices=("onnx", "openvino", "torchscript"), help="Export the best model after validation"
+    )
     return parser.parse_args()
 
 
@@ -43,7 +47,9 @@ def main() -> None:
     args = parse_args()
     data = resolve_data_path(args.data)
     if not (data / "train").is_dir() or not (data / "val").is_dir():
-        raise FileNotFoundError(f"Expected classification folders at {data}/train and {data}/val. Run the preparation script first.")
+        raise FileNotFoundError(
+            f"Expected classification folders at {data}/train and {data}/val. Run the preparation script first."
+        )
 
     train_args = {
         "data": str(data),
